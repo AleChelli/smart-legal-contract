@@ -6,8 +6,8 @@ contract SmartLegalContract
 
     address payable public seller;
     address public buyer;
-    address public genovaPortAccount;
-    address public gammaSRLAccount;
+    address public portAccount;
+    address public companySRLAccount;
     uint public amount;
     State public currentState;
 
@@ -17,15 +17,15 @@ contract SmartLegalContract
         _;
     }
     
-    //only GenovaPort can access
-    modifier isGenovaPort() {
-        require(msg.sender == genovaPortAccount);
+    //only Port can access
+    modifier isPort() {
+        require(msg.sender == portAccount);
         _;
     }
     
     //only GammaSRL can access.
-    modifier isGammaSRL() {
-        require(msg.sender == gammaSRLAccount);
+    modifier isCompanySRL() {
+        require(msg.sender == companySRLAccount);
         _;
     }
 
@@ -35,14 +35,14 @@ contract SmartLegalContract
 
     constructor(
         address payable _seller, address _buyer,
-        address _genovaPortAccount, address _gammaSRLAccount,
+        address _portAccount, address _companySRLAccount,
         uint _amount)
         public
     {
         seller = _seller;
         buyer = _buyer;
-        genovaPort = _genovaPortAccount;
-        gammaSRL = _gammaSRLAccount;
+        genovaPort = _portAccount;
+        gammaSRL = _companySRLAccount;
         amount = _amount;
         currentState = State.AWAITING_PAYMENT;
     }
@@ -53,12 +53,12 @@ contract SmartLegalContract
         currentState = State.AWAITING_DELIVERY;
     }
 
-    function deliveryDone() public isGenovaPort {
+    function deliveryDone() public isPort {
         require(currentState == State.AWAITING_DELIVERY);
         currentState = State.AWAITING_CHECK;
     }
 
-    function checkDone() public isGammaSRL {
+    function checkDone() public isCompanySRL {
         require(currentState == State.AWAITING_CHECK);
         seller.transfer(address(this).balance);
         currentState = State.COMPLETE;
