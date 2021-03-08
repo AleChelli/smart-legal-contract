@@ -1,13 +1,13 @@
 pragma solidity ^0.5.16;
 
-contract ClausolaContrattuale
+contract SmartLegalContract
 {
     enum State { AWAITING_PAYMENT, AWAITING_DELIVERY, AWAITING_CHECK, COMPLETE }
 
     address payable public seller;
     address public buyer;
-    address public genovaPort;
-    address public gammaSRL;
+    address public genovaPortAccount;
+    address public gammaSRLAccount;
     uint public amount;
     State public currentState;
 
@@ -17,15 +17,15 @@ contract ClausolaContrattuale
         _;
     }
     
-    //only Genova Port can access
+    //only GenovaPort can access
     modifier isGenovaPort() {
-        require(msg.sender == genovaPort);
+        require(msg.sender == genovaPortAccount);
         _;
     }
     
-    //only Gamma SRL can access.
+    //only GammaSRL can access.
     modifier isGammaSRL() {
-        require(msg.sender == gammaSRL);
+        require(msg.sender == gammaSRLAccount);
         _;
     }
 
@@ -35,14 +35,14 @@ contract ClausolaContrattuale
 
     constructor(
         address payable _seller, address _buyer,
-        address _genovaPort, address _gammaSRL,
+        address _genovaPortAccount, address _gammaSRLAccount,
         uint _amount)
         public
     {
         seller = _seller;
         buyer = _buyer;
-        genovaPort = _genovaPort;
-        gammaSRL = _gammaSRL;
+        genovaPort = _genovaPortAccount;
+        gammaSRL = _gammaSRLAccount;
         amount = _amount;
         currentState = State.AWAITING_PAYMENT;
     }
