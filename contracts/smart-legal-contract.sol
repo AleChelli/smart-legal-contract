@@ -41,8 +41,8 @@ contract SmartLegalContract
     {
         seller = _seller;
         buyer = _buyer;
-        genovaPort = _portAccount;
-        gammaSRL = _companySRLAccount;
+        portAccount = _portAccount;
+        companySRLAccount = _companySRLAccount;
         amount = _amount;
         currentState = State.AWAITING_PAYMENT;
     }
